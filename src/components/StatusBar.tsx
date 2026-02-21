@@ -1,0 +1,98 @@
+import { Terminal } from 'lucide-react';
+import { useAppState } from '../hooks/useAppState';
+
+interface StatusBarProps {
+  isTerminalOpen?: boolean;
+  onTerminalToggle?: () => void;
+}
+
+export const StatusBar = ({ isTerminalOpen, onTerminalToggle }: StatusBarProps) => {
+  const { graph, progress, agentWatcherState } = useAppState();
+
+  const nodeCount = graph?.nodes.length ?? 0;
+  const edgeCount = graph?.relationships.length ?? 0;
+
+  const primaryLanguage = (() => {
+    if (!graph) return null;
+    const languages = graph.nodes.map(n => n.properties.language).filter(Boolean);
+    if (languages.length === 0) return null;
+    const counts = languages.reduce((acc, lang) => {
+      acc[lang!] = (acc[lang!] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  })();
+
+  return (
+    <footer className="flex items-center justify-between px-4 py-1.5 glass border-t border-white/[0.08] text-[11px] text-text-muted">
+      <div className="flex items-center gap-3">
+        {agentWatcherState.isConnected ? (
+          <div className="flex items-center gap-2">
+            <span className="inline-block w-4 h-[3px] bg-violet-400/70 rounded-full" />
+            <span className="text-violet-300/80">Linked</span>
+            {agentWatcherState.workspacePath && (
+              <span className="text-text-muted truncate max-w-[200px] font-mono text-[10px]">
+                {agentWatcherState.workspacePath}
+              </span>
+            )}
+          </div>
+        ) : (
+          <span>Prowl</span>
+        )}
+      </div>
+
+      <div className="flex items-center gap-3">
+        {graph && (
+          <>
+            <span>{nodeCount} nodes</span>
+            <span className="text-white/10">|</span>
+            <span>{edgeCount} edges</span>
+            {primaryLanguage && (
+              <>
+                <span className="text-white/10">|</span>
+                <span>{primaryLanguage}</span>
+              </>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="flex items-center gap-3">
+        {progress && progress.phase !== 'complete' ? (
+          <>
+            <span>{progress.message}</span>
+            <div className="w-20 h-1 rounded-full overflow-hidden bg-white/[0.08]">
+              <div
+                className="h-full bg-accent rounded-full transition-all duration-300"
+                style={{ width: `${progress.percent}%` }}
+              />
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center gap-1.5">
+            <span className="inline-block w-4 h-[3px] bg-emerald-400/70 rounded-full" />
+            <span>Idle</span>
+          </div>
+        )}
+
+        {onTerminalToggle && (window as any).prowl?.terminal && (
+          <>
+            <span className="text-white/10">|</span>
+            <button
+              onClick={onTerminalToggle}
+              className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
+                isTerminalOpen
+                  ? 'text-accent bg-accent/10'
+                  : 'text-text-muted hover:text-text-secondary'
+              }`}
+              title="Toggle Terminal (Ctrl+`)"
+            >
+              <Terminal size={11} />
+              <span className="text-[10px]">Terminal</span>
+            </button>
+          </>
+        )}
+      </div>
+    </footer>
+  );
+};

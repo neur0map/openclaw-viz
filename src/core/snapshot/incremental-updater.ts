@@ -153,7 +153,7 @@ export async function applyIncrementalUpdate(
       sourceId: membership.nodeId,
       targetId: membership.communityId,
       confidence: 1.0,
-      reason: 'leiden-algorithm',
+      reason: 'louvain-algorithm',
     });
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "prowl",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Prowl — Code Knowledge Graph Explorer",
   "main": "dist/main/index.js",
   "type": "module",

@@ -61,7 +61,7 @@ const roadmapItems: RoadmapItem[] = [
   {
     id: 'core-community',
     title: 'Community Detection',
-    description: 'Leiden algorithm for code clustering',
+    description: 'Louvain algorithm for code clustering',
     status: 'completed',
     category: 'core',
   },

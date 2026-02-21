@@ -1,10 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Buffer } from 'buffer';
+import * as BufferModule from 'buffer';
 import App from './App';
 import './index.css';
 
 // isomorphic-git depends on Node's Buffer API
+const Buffer = BufferModule.Buffer || BufferModule;
 if (!globalThis.Buffer) globalThis.Buffer = Buffer;
 
 const container = document.getElementById('root');

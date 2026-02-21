@@ -1,10 +1,18 @@
-import Parser from 'web-tree-sitter';
 import { SupportedLanguages } from '../../config/supported-languages';
+
+// Dynamic import to handle web-tree-sitter's UMD/CommonJS export pattern
+const loadTreeSitter = async () => {
+    const module = await import('web-tree-sitter');
+    return module.default || module;
+};
+
+type Parser = any;
+type Language = any;
 
 let parser: Parser | null = null;
 
 // Compiled Language cache to avoid redundant fetches
-const languageCache = new Map<string, Parser.Language>();
+const languageCache = new Map<string, Language>();
 
 /**
  * Resolve WASM paths for dev (Vite) and production (Electron file://) builds.
@@ -25,6 +33,8 @@ function resolveWasmUrl(subPath: string): string {
 
 export const loadParser = async (): Promise<Parser> => {
     if (parser) return parser;
+
+    const Parser = await loadTreeSitter();
 
     await Parser.init({
         locateFile: (scriptName: string) => {
@@ -98,6 +108,7 @@ export const loadLanguage = async (language: SupportedLanguages, filePath?: stri
         const wasmInput: string | Uint8Array = wasmPath.startsWith('file:')
             ? await loadWasmBytes(wasmPath)
             : wasmPath;
+        const Parser = await loadTreeSitter();
         const loadedLanguage = await Parser.Language.load(wasmInput);
         languageCache.set(wasmPath, loadedLanguage);
         parser!.setLanguage(loadedLanguage);

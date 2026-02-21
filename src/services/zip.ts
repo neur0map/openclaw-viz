@@ -1,5 +1,10 @@
-import JSZip from 'jszip';
 import { shouldIgnorePath } from '../config/ignore-service';
+
+// Dynamic import to handle JSZip's UMD/CommonJS export pattern
+const loadJSZip = async () => {
+  const module = await import('jszip');
+  return module.default || module;
+};
 
 export interface FileEntry {
     path: string;
@@ -40,6 +45,7 @@ const findRootPrefix = (paths: string[]): string => {
 };
 
 export const extractZip = async (file: File): Promise<FileEntry[]> => {
+    const JSZip = await loadJSZip();
     const zip = await JSZip.loadAsync(file);
     const entries = Object.entries(zip.files);
 

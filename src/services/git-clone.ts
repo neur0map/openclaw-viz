@@ -1,8 +1,13 @@
-import git from 'isomorphic-git';
-import http from 'isomorphic-git/http/web';
+import * as http from 'isomorphic-git/http/web';
 import LightningFS from '@isomorphic-git/lightning-fs';
 import { shouldIgnorePath } from '../config/ignore-service';
 import { FileEntry } from './zip';
+
+// Dynamically import isomorphic-git to avoid CJS/ESM interop issues
+const getGitModule = async () => {
+  const m = await import('isomorphic-git');
+  return m.default || m;
+};
 
 let fs: LightningFS;
 let pfs: any;
@@ -120,6 +125,7 @@ export const cloneRepository = async (
   try {
     report('cloning', 0);
 
+    const git = await getGitModule();
     await git.clone({
       fs,
       http,

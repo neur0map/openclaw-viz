@@ -52,7 +52,7 @@ export default defineConfig({
             'vendor-react': ['react', 'react-dom'],
           }
         }
-      }
+      },
     },
     plugins: [
       react(),
@@ -67,12 +67,33 @@ export default defineConfig({
           }
         ]
       }),
+      commonjs({
+        transformMixedEsModules: true,
+        exclude: ['node_modules/react/**', 'node_modules/react-dom/**'],
+      }),
     ],
     resolve: {
       alias: {
         '@': resolve(__dirname, './src'),
         '@anthropic-ai/sdk/lib/transform-json-schema': resolve(__dirname, 'node_modules/@anthropic-ai/sdk/lib/transform-json-schema.mjs'),
         'mermaid': resolve(__dirname, 'node_modules/mermaid/dist/mermaid.esm.min.mjs'),
+        'jszip': resolve(__dirname, 'node_modules/jszip/dist/jszip.js'),
+        'events': resolve(__dirname, 'src/utils/events-wrapper.js'),
+        'decamelize': resolve(__dirname, 'src/utils/decamelize-wrapper.js'),
+        'camelcase': resolve(__dirname, 'src/utils/camelcase-wrapper.js'),
+        'p-queue': resolve(__dirname, 'src/utils/p-queue-wrapper.js'),
+        'semver': resolve(__dirname, 'src/utils/semver-wrapper.js'),
+        'base64-js': resolve(__dirname, 'src/utils/base64-js-wrapper.js'),
+        '@isomorphic-git/lightning-fs': resolve(__dirname, 'src/utils/lightning-fs-wrapper.js'),
+        'graphology-utils/is-graph': resolve(__dirname, 'src/utils/graphology-utils-is-graph-wrapper.js'),
+        'graphology-layout-forceatlas2/worker': resolve(__dirname, 'src/utils/graphology-layout-forceatlas2-worker-wrapper.js'),
+        'graphology-layout-forceatlas2': resolve(__dirname, 'src/utils/graphology-layout-forceatlas2-wrapper.js'),
+        'graphology-layout-noverlap': resolve(__dirname, 'src/utils/graphology-layout-noverlap-wrapper.js'),
+        'style-to-js': resolve(__dirname, 'src/utils/style-to-js-wrapper.js'),
+        'extend': resolve(__dirname, 'src/utils/extend-wrapper.js'),
+        'graphology-communities-louvain': resolve(__dirname, 'src/utils/graphology-communities-louvain-wrapper.js'),
+        'lowlight/lib/core': resolve(__dirname, 'src/utils/lowlight-lib-core-wrapper.js'),
+        'lowlight': resolve(__dirname, 'src/utils/lowlight-wrapper.js'),
       },
     },
     define: {
@@ -81,10 +102,11 @@ export default defineConfig({
     },
     optimizeDeps: {
       noDiscovery: true,
-      exclude: ['kuzu-wasm'],
+      exclude: ['kuzu-wasm', 'lowlight', 'react-syntax-highlighter'],
       include: [
         'buffer',
         'comlink',
+        'events',
         'jszip',
         'lru-cache',
         'minisearch',
@@ -142,7 +164,13 @@ export default defineConfig({
     },
     worker: {
       format: 'es' as const,
-      plugins: () => [commonjs(), wasm(), topLevelAwait()],
+      plugins: () => [
+        commonjs({
+          transformMixedEsModules: true,
+        }),
+        wasm(),
+        topLevelAwait(),
+      ],
     },
   }
 })

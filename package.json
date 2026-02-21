@@ -13,7 +13,7 @@
     "dist:mac": "electron-vite build && electron-builder --mac",
     "dist:win": "electron-vite build && electron-builder --win",
     "dist:linux": "electron-vite build && electron-builder --linux",
-    "postinstall": "npx @electron/rebuild -w node-pty && node scripts/patch-react-syntax-highlighter.js"
+    "postinstall": "npx @electron/rebuild -w node-pty && node scripts/patch-react-syntax-highlighter.cjs"
   },
   "dependencies": {
     "@huggingface/transformers": "^3.0.0",

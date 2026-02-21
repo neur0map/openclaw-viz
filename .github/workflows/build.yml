@@ -35,7 +35,7 @@ jobs:
         run: npx @electron/rebuild -w node-pty --arch ${{ matrix.arch }}
 
       - name: Apply patches
-        run: node scripts/patch-react-syntax-highlighter.js
+        run: node scripts/patch-react-syntax-highlighter.cjs
 
       - name: Build app bundle (macOS ${{ matrix.arch }})
         run: npm run build && npx electron-builder --mac dir --${{ matrix.arch }}
@@ -118,7 +118,7 @@ jobs:
         run: npx @electron/rebuild -w node-pty
 
       - name: Apply patches
-        run: node scripts/patch-react-syntax-highlighter.js
+        run: node scripts/patch-react-syntax-highlighter.cjs
 
       - name: Build & package (Windows)
         run: npm run build && npx electron-builder --win
@@ -153,7 +153,7 @@ jobs:
         run: npx @electron/rebuild -w node-pty
 
       - name: Apply patches
-        run: node scripts/patch-react-syntax-highlighter.js
+        run: node scripts/patch-react-syntax-highlighter.cjs
 
       - name: Build & package (Linux)
         run: npm run build && npx electron-builder --linux

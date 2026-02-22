@@ -69,7 +69,13 @@ export default defineConfig({
       }),
       commonjs({
         transformMixedEsModules: true,
-        exclude: ['node_modules/react/**', 'node_modules/react-dom/**'],
+        exclude: [
+          /node_modules\/react/,
+          /node_modules\/react-dom/,
+          /node_modules\/@babel\/runtime/,
+          /node_modules\/@swc\/helpers/,
+          /node_modules\/@vite\/js/,
+        ],
       }),
     ],
     resolve: {
@@ -102,7 +108,7 @@ export default defineConfig({
     },
     optimizeDeps: {
       noDiscovery: true,
-      exclude: ['kuzu-wasm', 'lowlight', 'react-syntax-highlighter'],
+      exclude: ['kuzu-wasm'],
       include: [
         'buffer',
         'comlink',

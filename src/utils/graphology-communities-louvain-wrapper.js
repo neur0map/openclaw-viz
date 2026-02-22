@@ -1,12 +1,4 @@
 // Wrapper for graphology-communities-louvain
-let graphology_communities_louvainModule;
-async function loadgraphology_communities_louvain() {
-  if (!graphology_communities_louvainModule) {
-    const module = await import('graphology-communities-louvain');
-    graphology_communities_louvainModule = module.default || module;
-  }
-  return graphology_communities_louvainModule;
-}
-
-// Export default
-export default await loadgraphology_communities_louvain();
+import graphology_communities_louvainRaw from 'graphology-communities-louvain';
+const graphology_communities_louvain = graphology_communities_louvainRaw.default || graphology_communities_louvainRaw;
+export default graphology_communities_louvain;

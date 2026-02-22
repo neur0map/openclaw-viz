@@ -1,12 +1,4 @@
 // Wrapper for base64-js
-let base64_jsModule;
-async function loadbase64_js() {
-  if (!base64_jsModule) {
-    const module = await import('base64-js');
-    base64_jsModule = module.default || module;
-  }
-  return base64_jsModule;
-}
-
-// Export default
-export default await loadbase64_js();
+import base64_jsRaw from 'base64-js';
+const base64_js = base64_jsRaw.default || base64_jsRaw;
+export default base64_js;

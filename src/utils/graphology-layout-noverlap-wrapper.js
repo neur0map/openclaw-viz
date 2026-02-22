@@ -1,12 +1,4 @@
 // Wrapper for graphology-layout-noverlap
-let graphology_layout_noverlapModule;
-async function loadgraphology_layout_noverlap() {
-  if (!graphology_layout_noverlapModule) {
-    const module = await import('graphology-layout-noverlap');
-    graphology_layout_noverlapModule = module.default || module;
-  }
-  return graphology_layout_noverlapModule;
-}
-
-// Export default
-export default await loadgraphology_layout_noverlap();
+import graphology_layout_noverlapRaw from 'graphology-layout-noverlap';
+const graphology_layout_noverlap = graphology_layout_noverlapRaw.default || graphology_layout_noverlapRaw;
+export default graphology_layout_noverlap;

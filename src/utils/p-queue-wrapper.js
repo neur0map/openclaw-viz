@@ -1,12 +1,4 @@
 // Wrapper for p-queue
-let p_queueModule;
-async function loadp_queue() {
-  if (!p_queueModule) {
-    const module = await import('p-queue');
-    p_queueModule = module.default || module;
-  }
-  return p_queueModule;
-}
-
-// Export default
-export default await loadp_queue();
+import p_queueRaw from 'p-queue';
+const p_queue = p_queueRaw.default || p_queueRaw;
+export default p_queue;

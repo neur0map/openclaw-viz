@@ -1,15 +1,6 @@
 // Wrapper for semver - provides both named and default exports
-let semverModule;
-
-async function loadSemver() {
-  if (!semverModule) {
-    const module = await import('semver');
-    semverModule = module.default || module;
-  }
-  return semverModule;
-}
-
-const loaded = await loadSemver();
+import semverRaw from 'semver';
+const semver = semverRaw.default || semverRaw;
 
 // Re-export as both default and named exports for compatibility
 export const {
@@ -43,5 +34,5 @@ export const {
   satisfies,
   minVersion,
   coerce,
-} = loaded;
-export default loaded;
+} = semver;
+export default semver;

@@ -1,16 +1,7 @@
 // Wrapper for events - provides both named and default exports
-let eventsModule;
-
-async function loadEvents() {
-  if (!eventsModule) {
-    const module = await import('events');
-    eventsModule = module.default || module;
-  }
-  return eventsModule;
-}
-
-const loaded = await loadEvents();
+import eventsRaw from 'events';
+const events = eventsRaw.default || eventsRaw;
 
 // Re-export as both default and named export for compatibility
-export const { EventEmitter } = loaded;
-export default loaded;
+export const { EventEmitter } = events;
+export default events;

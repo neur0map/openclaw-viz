@@ -1,6 +1,12 @@
-// Import the CommonJS module
-const lowlightModule = require('lowlight');
+// Wrapper for lowlight
+let lowlightModule;
+async function loadlowlight() {
+  if (!lowlightModule) {
+    const module = await import('lowlight');
+    lowlightModule = module.default || module;
+  }
+  return lowlightModule;
+}
 
-// Re-export both default and named exports for compatibility
-const lowlight = lowlightModule.default || lowlightModule;
-export default lowlight;
+// Export default
+export default await loadlowlight();

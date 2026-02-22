@@ -1,4 +1,12 @@
-import extend from 'extend';
+// Wrapper for extend
+let extendModule;
+async function loadextend() {
+  if (!extendModule) {
+    const module = await import('extend');
+    extendModule = module.default || module;
+  }
+  return extendModule;
+}
 
-// Re-export both default and named exports for compatibility
-export default extend.default || extend;
+// Export default
+export default await loadextend();

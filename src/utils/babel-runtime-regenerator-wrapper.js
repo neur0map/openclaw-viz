@@ -1,4 +1,12 @@
-import regenerator from '@babel/runtime/regenerator';
+// Wrapper for babel-runtime-regenerator
+let babel_runtime_regeneratorModule;
+async function loadbabel_runtime_regenerator() {
+  if (!babel_runtime_regeneratorModule) {
+    const module = await import('babel-runtime-regenerator');
+    babel_runtime_regeneratorModule = module.default || module;
+  }
+  return babel_runtime_regeneratorModule;
+}
 
-// Re-export both default and named exports for compatibility
-export default regenerator.default || regenerator;
+// Export default
+export default await loadbabel_runtime_regenerator();

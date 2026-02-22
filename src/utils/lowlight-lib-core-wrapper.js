@@ -1,6 +1,12 @@
-// Import real core module
-const coreModule = require('lowlight/lib/core');
+// Wrapper for lowlight/lib/core
+let lowlight_lib_coreModule;
+async function loadlowlight_lib_core() {
+  if (!lowlight_lib_coreModule) {
+    const module = await import('lowlight/lib/core');
+    lowlight_lib_coreModule = module.default || module;
+  }
+  return lowlight_lib_coreModule;
+}
 
-// Re-export both default and named exports for compatibility
-const core = coreModule.default || coreModule;
-export default core;
+// Export default
+export default await loadlowlight_lib_core();

@@ -1,4 +1,12 @@
-import styleToJs from 'style-to-js';
+// Wrapper for style-to-js
+let style_to_jsModule;
+async function loadstyle_to_js() {
+  if (!style_to_jsModule) {
+    const module = await import('style-to-js');
+    style_to_jsModule = module.default || module;
+  }
+  return style_to_jsModule;
+}
 
-// Re-export both default and named exports for compatibility
-export default styleToJs.default || styleToJs;
+// Export default
+export default await loadstyle_to_js();

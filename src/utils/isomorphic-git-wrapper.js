@@ -1,4 +1,12 @@
-import git from 'isomorphic-git';
+// Wrapper for isomorphic-git
+let isomorphic_gitModule;
+async function loadisomorphic_git() {
+  if (!isomorphic_gitModule) {
+    const module = await import('isomorphic-git');
+    isomorphic_gitModule = module.default || module;
+  }
+  return isomorphic_gitModule;
+}
 
-// Re-export both default and named exports for compatibility
-export default git.default || git;
+// Export default
+export default await loadisomorphic_git();

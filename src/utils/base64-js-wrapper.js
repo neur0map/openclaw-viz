@@ -1,5 +1,12 @@
-import base64 from 'base64-js';
+// Wrapper for base64-js
+let base64_jsModule;
+async function loadbase64_js() {
+  if (!base64_jsModule) {
+    const module = await import('base64-js');
+    base64_jsModule = module.default || module;
+  }
+  return base64_jsModule;
+}
 
-// Re-export both default and named exports for compatibility
-export default base64.default || base64;
-export const { fromByteArray, toByteArray } = base64.default || base64;
+// Export default
+export default await loadbase64_js();

@@ -1,5 +1,47 @@
-import semver from 'semver';
+// Wrapper for semver - provides both named and default exports
+let semverModule;
 
-// Re-export both default and named exports for compatibility
-export default semver.default || semver;
-export const { parse, parseVersion, valid, validRange, satisfies, coerce, gt, gte, lt, lte, eq, neq, cmp, diff, major, minor, patch, prerelease, inc, rcompare, compare, compareLoose, compareBuild } = semver.default || semver;
+async function loadSemver() {
+  if (!semverModule) {
+    const module = await import('semver');
+    semverModule = module.default || module;
+  }
+  return semverModule;
+}
+
+const loaded = await loadSemver();
+
+// Re-export as both default and named exports for compatibility
+export const {
+  parse,
+  valid,
+  clean,
+  SemVer,
+  inc,
+  diff,
+  compareIdentifiers,
+  rcompareIdentifiers,
+  major,
+  minor,
+  patch,
+  compare,
+  compareLoose,
+  compareBuild,
+  rcompare,
+  sort,
+  rsort,
+  gt,
+  lt,
+  eq,
+  neq,
+  gte,
+  lte,
+  cmp,
+  Comparator,
+  Range,
+  toComparators,
+  satisfies,
+  minVersion,
+  coerce,
+} = loaded;
+export default loaded;

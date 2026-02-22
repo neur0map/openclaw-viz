@@ -1,5 +1,12 @@
-import camelcase from 'camelcase';
+// Wrapper for camelcase
+let camelcaseModule;
+async function loadcamelcase() {
+  if (!camelcaseModule) {
+    const module = await import('camelcase');
+    camelcaseModule = module.default || module;
+  }
+  return camelcaseModule;
+}
 
-// Re-export both as default and named for compatibility
-export default camelcase.default || camelcase;
-export const camelCase = camelcase.default || camelcase;
+// Export default
+export default await loadcamelcase();

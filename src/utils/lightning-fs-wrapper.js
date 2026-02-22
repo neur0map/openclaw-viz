@@ -1,4 +1,12 @@
-import LightningFS from '@isomorphic-git/lightning-fs';
+// Wrapper for @isomorphic-git/lightning-fs
+let lightning_fsModule;
+async function loadlightning_fs() {
+  if (!lightning_fsModule) {
+    const module = await import('@isomorphic-git/lightning-fs');
+    lightning_fsModule = module.default || module;
+  }
+  return lightning_fsModule;
+}
 
-// Re-export both default and named exports for compatibility
-export default LightningFS.default || LightningFS;
+// Export default
+export default await loadlightning_fs();

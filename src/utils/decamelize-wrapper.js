@@ -1,5 +1,12 @@
-import decamelize from 'decamelize';
+// Wrapper for decamelize
+let decamelizeModule;
+async function loaddecamelize() {
+  if (!decamelizeModule) {
+    const module = await import('decamelize');
+    decamelizeModule = module.default || module;
+  }
+  return decamelizeModule;
+}
 
-// Re-export both as default and named for compatibility
-export default decamelize.default || decamelize;
-export const snakeCase = decamelize.default || decamelize;
+// Export default
+export default await loaddecamelize();

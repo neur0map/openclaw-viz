@@ -1,4 +1,12 @@
-import FA2Layout from 'graphology-layout-forceatlas2/worker';
+// Wrapper for graphology-layout-forceatlas2/worker
+let graphology_layout_forceatlas2_workerModule;
+async function loadgraphology_layout_forceatlas2_worker() {
+  if (!graphology_layout_forceatlas2_workerModule) {
+    const module = await import('graphology-layout-forceatlas2/worker');
+    graphology_layout_forceatlas2_workerModule = module.default || module;
+  }
+  return graphology_layout_forceatlas2_workerModule;
+}
 
-// Re-export both default and named exports for compatibility
-export default FA2Layout.default || FA2Layout;
+// Export default
+export default await loadgraphology_layout_forceatlas2_worker();
